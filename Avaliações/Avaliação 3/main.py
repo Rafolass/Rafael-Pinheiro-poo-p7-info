@@ -11,7 +11,7 @@ from tipocliente    import TipoCliente
 
 def main():
     
-    cli=Cliente(1, "Jose Maria", 100, "200.100.345-34", 1)
+    cli=Cliente(1, "Jose Simao da Silva", 1234, "200.100.345-34", 1)
     
     p1=Produto(1,100,"Arroz Agulha", 5.5) 
     it1=ItemNotaFiscal(1, 1, 10, p1)
