@@ -24,6 +24,12 @@ class Cliente():
     def str(self):
         string="\nId={4} Codigo={2} Nome={3} CNPJ/CPF={1} Tipo={0}".format(self._tipo, self._cnpjcpf, self._codigo, self._nome, self._id)
         return string
+    def getCodigo(self):
+        return self._codigo
+    def getNome(self):
+        return self._nome
+    def getCnpjCpf(self):
+        return self._cnpjcpf
     
 if __name__ == '__main__':
     cliente=Cliente(1, "Jose Maria", 100, '200.100.345-34', TipoCliente.PESSOA_FISICA)
