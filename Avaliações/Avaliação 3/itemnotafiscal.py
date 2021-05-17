@@ -30,7 +30,27 @@ class ItemNotaFiscal():
                                                                                                              self._sequencial, 
                                                                                                              self._id)
         return string
-    
+    def getValorItem(self):
+        return self._valorItem
+
+    def getSequencial(self):
+        seq = str(self._sequencial)
+        if len(seq) > 2:
+            return seq
+
+        elif len(seq) > 1:
+            return f'0{seq}'
+
+        return f'00{seq}'
+
+    def getDescricao(self):
+        return self._descricao
+
+    def getQuantidade(self):
+        return self._quantidade
+
+    def getValorUnitario(self):
+        return self._valorUnitario
         
 if __name__ == '__main__':
     produto = Produto(1,100,'Arroz', 5.5) 
