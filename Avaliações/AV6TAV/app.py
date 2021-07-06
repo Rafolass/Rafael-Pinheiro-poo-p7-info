@@ -6,7 +6,7 @@ from AV6TAV.models import Cliente, Produto, ItemNotaFiscal, NotaFiscal
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
-cliente_list = [
+listadeclientes = [
     Cliente(1, 'Rafael', 100, '4002892200', 'P. Física'),
     Cliente(2, 'Pedrinho Matador', 200, '3334442220', 'P. Jurídica'),
     Cliente(3, 'William Bonner', 300, '0119574231', 'P.Física')
@@ -26,8 +26,8 @@ listadeitens = [
 ]
 
 listadenotas = [
-    NotaFiscal(1, 1, cliente_list[0].to_json()),
-    NotaFiscal(2, 2, cliente_list[1].to_json())
+    NotaFiscal(1, 1, listadeclientes[0].to_json()),
+    NotaFiscal(2, 2, listadeclientes[1].to_json())
 ]
 
 listadenotas[0].adicionar_item(listadeitens[0].to_json())
@@ -39,13 +39,15 @@ listadenotas[1].calcular_total_nota()
 
 @app.route("/clientes", methods=["GET"])
 def seleciona_clientes():
-    clientes_json = [cliente.to_json() for cliente in cliente_list]
+    clientes_json = []
+    for cliente in listadeclientes:
+        clientes_json.append(cliente.to_json())
 
     return gera_response(200, "clientes", clientes_json)
 
 @app.route("/cliente/<id>", methods=["GET"])
 def seleciona_cliente(id):
-    for cliente in cliente_list:
+    for cliente in listadeclientes:
         if str(cliente.id) == str(id):
             cliente_objeto = cliente
             cliente_json = cliente_objeto.to_json()
@@ -61,7 +63,7 @@ def cria_cliente():
         cliente = Cliente(id=body["id"], nome=body["nome"],
                           codigo=body["codigo"], cnpjcpf=body["cnpjcpf"],
                           tipo=body["tipo"])
-        cliente_list.append(cliente)
+        listadeclientes.append(cliente)
         return gera_response(201, "cliente", cliente.to_json(), "Criado com sucesso")
     except Exception as e:
         print('Erro', e)
@@ -71,7 +73,7 @@ def cria_cliente():
 @app.route("/cliente/<id>", methods=["PUT"])
 def atualiza_cliente(id):
     cliente_objeto = None
-    for cliente in cliente_list:
+    for cliente in listadeclientes:
         if str(id) == str(cliente.id):
             cliente_objeto = cliente
     body = request.get_json()
@@ -88,7 +90,7 @@ def atualiza_cliente(id):
         if 'tipo' in body:
             cliente_objeto.tipo = body['tipo']
 
-        cliente_list.append(cliente_objeto)
+        listadeclientes.append(cliente_objeto)
         return gera_response(200, "cliente", cliente_objeto.to_json(), "Atualizado com sucesso")
     except Exception as e:
         print('Erro', e)
@@ -99,13 +101,13 @@ def atualiza_cliente(id):
 def deleta_cliente(id):
     try:
         cliente_objeto = None
-        for cliente in cliente_list:
+        for cliente in listadeclientes:
             if str(id) == str(cliente.id):
                 cliente_objeto = cliente
 
-        for posicao_cliente in range(0, len(cliente_list)):
-            if cliente_list[posicao_cliente] == cliente_objeto:
-                del(cliente_list[posicao_cliente])
+        for posicao_cliente in range(0, len(listadeclientes)):
+            if listadeclientes[posicao_cliente] == cliente_objeto:
+                del(listadeclientes[posicao_cliente])
 
         return gera_response(200, "cliente", cliente_objeto.to_json(), "Deletado com sucesso")
     except Exception as e:
@@ -115,7 +117,9 @@ def deleta_cliente(id):
 
 @app.route("/produtos", methods=["GET"])
 def seleciona_produtos():
-    produtos_json = [produto.to_json() for produto in listadeprodutos]
+    produtos_json = []
+    for produtos in listadeprodutos:
+        produtos_json.append(produtos.to_json())
 
     return gera_response(200, "produtos", produtos_json)
 
@@ -191,7 +195,10 @@ def deleta_produto(id):
 
 @app.route("/itens", methods=["GET"])
 def seleciona_itens():
-    itens_json = [item.to_json() for item in listadeitens]
+    itens_json = []
+    for item in listadeitens:
+        itens_json.append(item.to_json())
+
 
     return gera_response(200, "itens", itens_json)
 
@@ -268,7 +275,9 @@ def deleta_item(id):
 
 @app.route("/notas", methods=["GET"])
 def seleciona_notas():
-    notas_json = [nota.to_json() for nota in listadenotas]
+    notas_json = []
+    for notas in listadenotas:
+        notas_json.append(notas.to_json())
 
     return gera_response(200, "notas", notas_json)
 
