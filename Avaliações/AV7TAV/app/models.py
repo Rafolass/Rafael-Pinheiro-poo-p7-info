@@ -56,7 +56,7 @@ class ItemNotaFiscal(db.Model):
 
         return f'00{seq}'
 
-class Produto:
+class Produto(db.Model):
     __tablename__ = 'PRODUTO'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -75,7 +75,7 @@ class Produto:
     def to_json(self):
         return {"id": self.id, "codigo": self.codigo, "descricao": self.descricao, "valorUnitario": self.valorUnitario}
 
-class NotaFiscal:
+class NotaFiscal(db.Model):
     __tablename__ = 'NOTA'
 
     id = db.Column(db.Integer, primary_key=True)
